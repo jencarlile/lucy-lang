@@ -2,6 +2,7 @@ package ast
 
 import "lucy/token"
 
+// Every node in the AST must implement the Node interface
 type Node interface {
 	TokenLiteral() string
 }
@@ -29,6 +30,7 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
+// LetStatement implements Statement and Node interfaces
 type LetStatement struct {
 	Token token.Token // the token.LET token
 	Name  *Identifier
@@ -40,6 +42,7 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
+// Identifier implements Expression and Node interfaces
 type Identifier struct {
 	Token token.Token // the token.IDENT token
 	Value string
@@ -48,4 +51,15 @@ type Identifier struct {
 func (i *Identifier) expressionNode() {}
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
+}
+
+// ReturnStatement implements Statement and Node interfaces
+type ReturnStatement struct {
+	Token       token.Token // the 'return' token
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string {
+	return rs.Token.Literal
 }
